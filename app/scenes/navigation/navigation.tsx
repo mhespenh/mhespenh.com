@@ -50,7 +50,7 @@ export const Navigation: FC = () => {
       </Avatar>
       <div className="block sm:hidden float-left">
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button variant="ghost">Menu</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="overflow-x-scroll">
