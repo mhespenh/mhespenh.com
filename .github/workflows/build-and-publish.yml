@@ -1,0 +1,19 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        docker login -u ${{ secrets.DOCKER_REGISTRY_KEY }} -p ${{ secrets.DOCKER_REGISTRY_KEY }} registry.digitalocean.com
+        docker build . --file Dockerfile --tag registry.digitalocean.com/mhespenh-com/mhespenh.com:latest
+        docker push registry.digitalocean.com/mhespenh-com/mhespenh.com:latest

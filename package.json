@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
+    "build-docker": "docker build . -t registry.digitalocean.com/mhespenh-com/mhespenh.com:latest",
+    "push-docker": "docker push registry.digitalocean.com/mhespenh-com/mhespenh.com:latest",
     "dev": "remix dev --manual",
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc"
