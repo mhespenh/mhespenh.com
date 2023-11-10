@@ -29,13 +29,13 @@ export default function Project() {
     <div className="prose dark:prose-invert">
       <h1>{title}</h1>
       <p>{new Date(publishedAt).toLocaleDateString()}</p>
-      <p className="">
+      <div className="">
         {tags.map((t) => (
           <Badge key={t.id} className="m-1">
             {t.name}
           </Badge>
         ))}
-      </p>
+      </div>
       <a
         href={githubLink}
         rel="noopener noreferrer"
