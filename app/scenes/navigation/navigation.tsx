@@ -55,10 +55,7 @@ export const Navigation: FC = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="overflow-x-scroll">
             <DropdownMenuItem>
-              <Link to="/">Home</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/about">About</Link>
+              <Link to="/">About</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link to="/projects">Projects</Link>
@@ -73,8 +70,7 @@ export const Navigation: FC = () => {
         </DropdownMenu>
       </div>
       <div className="gap-2 hidden sm:flex">
-        <NavigationButton to="/" name="Home" />
-        <NavigationButton to="/about" name="About" />
+        <NavigationButton to="/" name="About" />
         <NavigationButton to="/projects" name="Projects" />
         <NavigationButton to="/blog" name="Blog" />
         <NavigationButton to="/contact" name="Contact" />
