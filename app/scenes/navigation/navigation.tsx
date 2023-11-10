@@ -45,7 +45,7 @@ export const Navigation: FC = () => {
       "
     >
       <Avatar className="mr-10">
-        <AvatarImage src="apple-touch-icon.png" />
+        <AvatarImage src="/apple-touch-icon.png" />
         <AvatarFallback>M</AvatarFallback>
       </Avatar>
       <div className="block sm:hidden float-left">

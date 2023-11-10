@@ -15,5 +15,9 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_REGISTRY_KEY }} -p ${{ secrets.DOCKER_REGISTRY_KEY }} registry.digitalocean.com
-        docker build . --file Dockerfile --tag registry.digitalocean.com/mhespenh-com/mhespenh.com:latest
+        docker build . \
+          --file Dockerfile \
+          --tag registry.digitalocean.com/mhespenh-com/mhespenh.com:latest \
+          --build-arg CONTENTFUL_GRAPHQL_ENDPOINT=${{ secrets.CONTENTFUL_GRAPHQL_ENDPOINT }} \
+          --build-arg CONTENTFUL_API_TOKEN=${{ secrets.CONTENTFUL_API_TOKEN }}
         docker push registry.digitalocean.com/mhespenh-com/mhespenh.com:latest
