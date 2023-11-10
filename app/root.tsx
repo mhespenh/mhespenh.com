@@ -1,5 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import { json, type LinksFunction } from "@remix-run/node";
 import type { MetaFunction } from "@remix-run/react";
 import {
   Links,
@@ -8,9 +8,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 import { useEffect } from "react";
 import globalStyles from "~/globals.css";
+import { pageview } from "~/lib/google-analytics";
 import { Navigation } from "~/scenes/navigation";
 
 export const links: LinksFunction = () => [
@@ -31,7 +34,20 @@ export const links: LinksFunction = () => [
 
 export const meta: MetaFunction = () => [{ title: "mhespenh.com" }];
 
+export const loader = async () => {
+  return json({ gaTrackingId: process.env.GA_TRACKING_ID });
+};
+
 export default function App() {
+  const location = useLocation();
+  const { gaTrackingId } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production" && gaTrackingId) {
+      pageview(location.pathname, gaTrackingId);
+    }
+  }, [location, gaTrackingId]);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       document.body.classList.add("dark");
@@ -46,6 +62,29 @@ export default function App() {
         <Links />
       </head>
       <body>
+        {process.env.NODE_ENV !== "production" || !gaTrackingId ? null : (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
+            />
+            <script
+              async
+              id="gtag-init"
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+              `,
+              }}
+            />
+          </>
+        )}
         <Navigation />
         <div
           className="
