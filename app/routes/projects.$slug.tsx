@@ -22,7 +22,7 @@ export default function Project() {
     githubLink,
     sys: { publishedAt },
     contentfulMetadata: { tags },
-    body: { json },
+    body: { json, links },
   } = useLoaderData<typeof loader>();
 
   return (
@@ -45,7 +45,26 @@ export default function Project() {
         <Github size={24} />
         View at Github.com
       </a>
-      {documentToReactComponents(json)}
+      {documentToReactComponents(json, {
+        renderNode: {
+          "embedded-asset-block": (node) => {
+            const assetId = node.data.target.sys.id;
+            const asset = links.assets.block.find((a) => a.sys.id === assetId);
+            if (!asset) return null;
+
+            return (
+              <div className="flex flex-col justify-center items-center">
+                <img
+                  className="mt-0 mb-2"
+                  src={asset.url}
+                  alt={asset.description}
+                />
+                <div>{asset.title}</div>
+              </div>
+            );
+          },
+        },
+      })}
     </div>
   );
 }

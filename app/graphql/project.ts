@@ -12,6 +12,20 @@ export type Project = {
   };
   body: {
     json: any;
+    links: {
+      assets: {
+        block: {
+          title: string;
+          description: string;
+          url: string;
+          width: number;
+          height: number;
+          sys: {
+            id: string;
+          };
+        }[];
+      };
+    };
   };
   contentfulMetadata: {
     tags: {
@@ -48,6 +62,20 @@ export const getProjectBySlug = async (slug: string) => {
           }
           body {
             json
+            links {
+              assets {
+                block {
+                  title
+                  description
+                  url
+                  width
+                  height
+                  sys {
+                    id
+                  }
+                }
+              }
+            }
           }
           contentfulMetadata {
             tags {
