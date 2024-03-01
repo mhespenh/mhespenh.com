@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "build-docker": "docker build --build-arg CONTENTFUL_GRAPHQL_ENDPOINT=$CONTENTFUL_GRAPHQL_ENDPOINT --build-arg CONTENTFUL_API_TOKEN=$CONTENTFUL_API_TOKEN . -t registry.digitalocean.com/mhespenh-com/mhespenh.com:latest",
-    "push-docker": "docker push registry.digitalocean.com/mhespenh-com/mhespenh.com:latest",
     "dev": "remix dev --manual",
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc"
@@ -41,7 +39,8 @@
     "autoprefixer": "^10.4.16",
     "eslint": "^8.38.0",
     "prettier": "^3.0.3",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vercel": "^33.5.3"
   },
   "engines": {
     "node": ">=18.0.0"
