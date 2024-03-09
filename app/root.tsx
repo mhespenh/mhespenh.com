@@ -35,18 +35,24 @@ export const links: LinksFunction = () => [
 export const meta: MetaFunction = () => [{ title: "mhespenh.com" }];
 
 export const loader = async () => {
-  return json({ gaTrackingId: process.env.GA_TRACKING_ID });
+  return json({
+    gaTrackingId: process.env.GA_TRACKING_ID,
+    umamiScriptUrl: process.env.UMAMI_SCRIPT_URL,
+    umamiWebsiteId: process.env.UMAMI_WEBSITE_ID,
+  });
 };
 
 export default function App() {
   const location = useLocation();
-  const { gaTrackingId } = useLoaderData<typeof loader>();
+  const { gaTrackingId, umamiScriptUrl, umamiWebsiteId } =
+    useLoaderData<typeof loader>();
+  const isProd = process.env.NODE_ENV === "production";
 
   useEffect(() => {
-    if (process.env.NODE_ENV === "production" && gaTrackingId) {
+    if (isProd && gaTrackingId) {
       pageview(location.pathname, gaTrackingId);
     }
-  }, [location, gaTrackingId]);
+  }, [isProd, location, gaTrackingId]);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -58,6 +64,13 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {isProd && (
+          <script
+            defer
+            src={umamiScriptUrl}
+            data-website-id={umamiWebsiteId}
+          ></script>
+        )}
         <Meta />
         <Links />
       </head>
