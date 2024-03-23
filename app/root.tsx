@@ -74,7 +74,7 @@ export default function App() {
             <script
               defer
               data-domain="mhespenh.com"
-              src="http://plausible.mhespenh.com/js/script.js"
+              src="https://plausible.mhespenh.com/js/script.js"
             ></script>
           </>
         )}
