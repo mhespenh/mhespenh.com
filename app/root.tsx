@@ -65,11 +65,18 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {isProd && (
-          <script
-            defer
-            src={umamiScriptUrl}
-            data-website-id={umamiWebsiteId}
-          ></script>
+          <>
+            <script
+              defer
+              src={umamiScriptUrl}
+              data-website-id={umamiWebsiteId}
+            ></script>
+            <script
+              defer
+              data-domain="mhespenh.com"
+              src="http://plausible.mhespenh.com/js/script.js"
+            ></script>
+          </>
         )}
         <Meta />
         <Links />
