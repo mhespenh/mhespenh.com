@@ -30,6 +30,10 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap",
   },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap",
+  },
 ];
 
 export const meta: MetaFunction = () => [{ title: "mhespenh.com" }];
@@ -74,7 +78,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-background text-foreground min-h-screen overflow-x-hidden transition-colors duration-300">
         {process.env.NODE_ENV !== "production" || !gaTrackingId ? null : (
           <>
             <script
@@ -99,16 +103,42 @@ export default function App() {
           </>
         )}
         <Navigation />
-        <div
-          className="
-            pt-32 
-            ml-3 mr-3
-            md:ml-auto md:mr-auto md:max-w-3xl
-            min-h-screen
-          "
-        >
-          <Outlet />
+        {/* Background Ambient Gradients */}
+        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden opacity-50 dark:opacity-100">
+          <div className="absolute top-[-20%] left-[-10%] w-[100%] h-[50%] bg-purple-400/40 dark:bg-purple-900/70 blur-[120px] rounded-full mix-blend-multiply dark:mix-blend-screen"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[60%] bg-blue-400/20 dark:bg-blue-900/20 blur-[150px] rounded-full mix-blend-multiply dark:mix-blend-screen"></div>
         </div>
+        <main className="max-w-[1280px] mx-auto px-6 pt-32 pb-24 flex flex-col gap-24 relative">
+          <Outlet />
+        </main>
+        {/* Footer */}
+        <footer className="w-full py-12 border-t border-border bg-background mt-auto relative z-10">
+          <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center px-8 gap-6">
+            <div className="text-xs uppercase font-medium tracking-widest text-muted-foreground">
+              © 2024 mhespenh.com. Built with precision.
+            </div>
+            <div className="flex gap-6 text-xs uppercase font-medium tracking-widest text-muted-foreground">
+              <a
+                href="https://github.com/mhespenh"
+                className="hover:text-foreground transition-colors hover:translate-y-[-2px]"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://linkedin.com/in/mhespenh"
+                className="hover:text-foreground transition-colors hover:translate-y-[-2px]"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://twitter.com/mhespenh"
+                className="hover:text-foreground transition-colors hover:translate-y-[-2px]"
+              >
+                Twitter
+              </a>
+            </div>
+          </div>
+        </footer>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -26,48 +26,33 @@ export const LightDarkToggle: FC<Props> = ({ className }) => {
       onClick={handleClick}
       className={clsx(
         className,
-        "overflow-hidden h-10 w-10 p-4 rounded-full",
-        "self-center hover:bg-card-foreground/10 ",
-        "active:shadow-inner ",
-        "transition-colors",
-        "text-primary dark:text-foreground",
-        "hover:text-yellow-700 dark:hover:text-yellow-400"
+        "relative overflow-hidden h-10 w-10 bg-card/40 backdrop-blur-xl border border-border hover:bg-accent/30 transition-all duration-300 flex items-center justify-center rounded-full text-primary dark:text-[#d2bbff]"
       )}
     >
       <div
         className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "dark" ? "-translate-y-2" : "-translate-y-10"
+          "absolute transition-transform ease-in-out duration-500",
+          mode === "dark" ? "translate-y-0" : "-translate-y-12"
         )}
       >
-        <MoonIcon className="text" />
+        <MoonIcon size={20} />
       </div>
       <div
         className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "system" ? "-translate-y-8" : "translate-y-8"
+          "absolute transition-transform ease-in-out duration-500",
+          mode === "system" ? "translate-y-0" : "translate-y-12"
         )}
       >
-        <SunMoonIcon />
+        <SunMoonIcon size={20} />
       </div>
       <div
         className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "light" ? "-translate-y-14" : "translate-y-2"
+          "absolute transition-transform ease-in-out duration-500",
+          mode === "light" ? "translate-y-0" : "translate-y-12"
         )}
       >
-        <SunIcon />
+        <SunIcon size={20} />
       </div>
-      {/* <div>S</div> */}
     </button>
   );
 };

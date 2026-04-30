@@ -18,32 +18,35 @@ export const ProjectCard: FC<Props> = ({
   publishedAt,
   description,
 }) => (
-  <div
-    className="
-      flex flex-col items-center md:flex-row
-      hover:bg-gray-100 dark:hover:bg-gray-700
-      bg-white dark:bg-gray-800
-      border border-gray-200 dark:border-gray-700
-      rounded-lg shadow hover:shadow-lg
-      transition-all 
-    "
+  <Link 
+    to={`/projects/${slug}`}
+    className="group flex flex-col bg-card/40 backdrop-blur-xl border border-border rounded-xl overflow-hidden shadow-lg hover:border-primary/40 hover:bg-card/50 transition-all duration-500"
   >
-    <img
-      className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-64 md:rounded-none md:rounded-l-lg"
-      src={headerImage}
-      alt={headerAlt}
-    />
-    <Link
-      className="flex flex-col justify-between p-4 leading-normal"
-      to={slug}
-    >
-      <h5 className="mb-2 text-2xl font-bold tracking-tight prose dark:prose-invert">
-        {title}
-      </h5>
-      <p className="italic mb-3 ">
-        {new Date(publishedAt).toLocaleDateString()}
+    <div className="h-64 w-full overflow-hidden relative">
+      <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
+      <img
+        alt={headerAlt}
+        src={headerImage}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+      />
+    </div>
+    <div className="p-8 flex flex-col gap-4 flex-grow">
+      <div className="flex justify-between items-start">
+        <h2 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+          {title}
+        </h2>
+        <span className="text-xs font-semibold text-muted-foreground pt-2">
+          {new Date(publishedAt).toLocaleDateString()}
+        </span>
+      </div>
+      <p className="text-muted-foreground line-clamp-3 mb-4 text-sm leading-relaxed">
+        {description}
       </p>
-      <p className="font-normal prose dark:prose-invert">{description}</p>
-    </Link>
-  </div>
+      <div className="mt-auto flex flex-wrap gap-2">
+        <span className="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md">
+          Case Study
+        </span>
+      </div>
+    </div>
+  </Link>
 );
