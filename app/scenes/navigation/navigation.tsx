@@ -1,81 +1,78 @@
+// Sticky glass pill holding the avatar, the section rail and the theme dial.
+// The fixed scrim above it blurs page content as it scrolls under the pill.
 import { Link } from "@remix-run/react";
-import { useEffect, useRef, type FC } from "react";
+import { MenuIcon } from "lucide-react";
+import { type FC } from "react";
 import { LightDarkToggle } from "~/components/dark-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { NavigationButton } from "./navigation-button";
+import { NavigationTabs } from "./navigation-tabs";
 
-export const Navigation: FC = () => {
-  const ref = useRef<HTMLDivElement>(null);
+const SECTIONS = [
+  { to: "/", name: "About" },
+  { to: "/projects", name: "Projects" },
+  { to: "/blog", name: "Blog" },
+  { to: "/contact", name: "Contact" },
+];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 16) {
-        ref.current?.classList.add("shadow-md");
-        ref.current?.classList.remove("shadow-none");
-      } else {
-        ref.current?.classList.add("shadow-none");
-        ref.current?.classList.remove("shadow-md");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  return (
+export const Navigation: FC = () => (
+  <>
     <div
-      ref={ref}
-      className="
-        shadow-none transition-shadow
-        fixed left-[50%] translate-x-[-50%] p-2
-        top-0 sm:top-4
-        rounded-none sm:rounded-full
-        flex gap-2 justify-between
-        w-full max-w-3xl
-        z-10
-        border border-primary/10
-        bg-card/10 dark:bg-white/10 backdrop-blur-lg
-      "
-    >
-      <Avatar className="mr-10">
-        <AvatarImage src="/apple-touch-icon.png" />
-        <AvatarFallback>M</AvatarFallback>
-      </Avatar>
-      <div className="block sm:hidden float-left">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost">Menu</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="overflow-x-scroll">
-            <DropdownMenuItem>
-              <Link to="/">About</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/projects">Projects</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/blog">Blog</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/contact">Contact</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-x-0 top-0 z-[1] h-[104px]"
+      style={{
+        backdropFilter: "blur(var(--glass-blur))",
+        WebkitBackdropFilter: "blur(var(--glass-blur))",
+        maskImage: "linear-gradient(to bottom, #000 55%, transparent)",
+        WebkitMaskImage: "linear-gradient(to bottom, #000 55%, transparent)",
+      }}
+    />
+    <div className="sticky top-4 z-[2] w-full max-w-3xl">
+      <div
+        className="flex items-center justify-between gap-4 rounded-full border border-[var(--glass-border)] p-2 [box-shadow:var(--neu-shadow-up)]"
+        style={{
+          background: "var(--glass-bg)",
+          backdropFilter: "blur(var(--glass-blur))",
+          WebkitBackdropFilter: "blur(var(--glass-blur))",
+        }}
+      >
+        <Link to="/" aria-label="Home" className="rounded-full">
+          <Avatar className="[box-shadow:var(--neu-shadow-up)]">
+            <AvatarImage src="/apple-touch-icon.png" alt="mhespenh" />
+            <AvatarFallback>M</AvatarFallback>
+          </Avatar>
+        </Link>
+
+        <div className="sm:hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              aria-label="Menu"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--tile-bg)] text-ink-1 [box-shadow:var(--neu-shadow-up)] active:[box-shadow:var(--neu-shadow-in)]"
+            >
+              <MenuIcon size={20} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="center"
+              className="border-[var(--glass-border)] bg-[var(--glass-bg)] text-ink-2 [box-shadow:var(--neu-shadow-up)] [backdrop-filter:blur(var(--glass-blur))]"
+            >
+              {SECTIONS.map(({ to, name }) => (
+                <DropdownMenuItem key={to} asChild>
+                  <Link to={to}>{name}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <NavigationTabs sections={SECTIONS} />
+
+        <LightDarkToggle />
       </div>
-      <div className="gap-2 hidden sm:flex">
-        <NavigationButton to="/" name="About" />
-        <NavigationButton to="/projects" name="Projects" />
-        <NavigationButton to="/blog" name="Blog" />
-        <NavigationButton to="/contact" name="Contact" />
-      </div>
-      <LightDarkToggle className="ml-10" />
     </div>
-  );
-};
+  </>
+);

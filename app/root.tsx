@@ -28,9 +28,21 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap",
   },
 ];
+
+// Applied before first paint so the page never renders the light theme and then flips.
+const themeInitScript = `
+  try {
+    var mode = localStorage.getItem("theme") || "system";
+    var dark =
+      mode === "dark" ||
+      (mode === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.classList.toggle("dark", dark);
+  } catch (e) {}
+`;
 
 export const meta: MetaFunction = () => [{ title: "mhespenh.com" }];
 
@@ -54,11 +66,6 @@ export default function App() {
     }
   }, [isProd, location, gaTrackingId]);
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.body.classList.add("dark");
-    }
-  }, []);
   return (
     <html lang="en">
       <head>
@@ -73,6 +80,7 @@ export default function App() {
         )}
         <Meta />
         <Links />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
         {process.env.NODE_ENV !== "production" || !gaTrackingId ? null : (
@@ -98,16 +106,11 @@ export default function App() {
             />
           </>
         )}
-        <Navigation />
-        <div
-          className="
-            pt-32 
-            ml-3 mr-3
-            md:ml-auto md:mr-auto md:max-w-3xl
-            min-h-screen
-          "
-        >
-          <Outlet />
+        <div className="flex min-h-screen flex-col items-center px-4 pb-24 pt-4">
+          <Navigation />
+          <div className="w-full max-w-3xl pt-28">
+            <Outlet />
+          </div>
         </div>
         <ScrollRestoration />
         <Scripts />

@@ -17,6 +17,17 @@ module.exports = {
     },
     extend: {
       colors: {
+        ink: {
+          1: "var(--ink-1)",
+          2: "var(--ink-2)",
+          3: "var(--ink-3)",
+          4: "var(--ink-4)",
+        },
+        indigo: "#6d7dff",
+        violet: "#9b86ff",
+        mint: "#29c79a",
+        rose: "#e94a76",
+        amber: "#e9a23a",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -52,7 +63,31 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['"Inter"'],
+        sans: ['"Inter"', "sans-serif"],
+        display: ['"Manrope"', "sans-serif"],
+        mono: ['"JetBrains Mono"', "monospace"],
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            "--tw-prose-body": "var(--ink-2)",
+            "--tw-prose-headings": "var(--ink-1)",
+            "--tw-prose-lead": "var(--ink-2)",
+            "--tw-prose-links": "var(--color-indigo)",
+            "--tw-prose-bold": "var(--ink-1)",
+            "--tw-prose-counters": "var(--ink-3)",
+            "--tw-prose-bullets": "var(--ink-4)",
+            "--tw-prose-hr": "var(--glass-border)",
+            "--tw-prose-quotes": "var(--ink-1)",
+            "--tw-prose-quote-borders": "var(--color-indigo)",
+            "--tw-prose-captions": "var(--ink-3)",
+            "--tw-prose-code": "var(--ink-1)",
+            "--tw-prose-pre-code": "var(--ink-1)",
+            "--tw-prose-pre-bg": "var(--tile-bg)",
+            "--tw-prose-th-borders": "var(--glass-border)",
+            "--tw-prose-td-borders": "var(--glass-border)",
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
