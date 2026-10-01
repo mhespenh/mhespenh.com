@@ -1,20 +1,26 @@
-import { Link, useLocation } from "@remix-run/react";
-import { type FC } from "react";
-import { Button } from "~/components/ui/button";
+// One label in the navigation rail. The moving pill behind it is drawn by the rail.
+import { Link } from "@remix-run/react";
+import clsx from "clsx";
+import { forwardRef } from "react";
 
-type Props = { to: string; name: string };
+type Props = { to: string; name: string; isCurrent: boolean };
 
-export const NavigationButton: FC<Props> = ({ to, name }) => {
-  const { pathname } = useLocation();
-  const [, root] = pathname.split("/");
-
-  return (
-    <Button
-      className="rounded-[10px]"
-      variant={`/${root}` === to ? "default" : "ghost"}
-      asChild
+export const NavigationButton = forwardRef<HTMLAnchorElement, Props>(
+  ({ to, name, isCurrent }, ref) => (
+    <Link
+      ref={ref}
+      to={to}
+      aria-current={isCurrent ? "page" : undefined}
+      className={clsx(
+        "relative z-10 select-none whitespace-nowrap rounded-full px-4 py-1.5 font-sans text-sm font-medium transition-colors duration-200",
+        "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-indigo",
+        isCurrent
+          ? "text-indigo dark:text-white"
+          : "text-ink-3 hover:text-ink-2 dark:text-ink-2 dark:hover:text-ink-1"
+      )}
     >
-      <Link to={to}>{name}</Link>
-    </Button>
-  );
-};
+      {name}
+    </Link>
+  )
+);
+NavigationButton.displayName = "NavigationButton";

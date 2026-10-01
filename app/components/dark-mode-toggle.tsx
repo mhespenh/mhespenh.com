@@ -1,73 +1,109 @@
+// Round neumorphic button that cycles the colour theme.
+// Cycles system -> light -> dark and slides the matching icon into view.
 import clsx from "clsx";
 import { MoonIcon, SunIcon, SunMoonIcon } from "lucide-react";
-import type { FC } from "react";
-import { useState } from "react";
+import type { FC, ReactNode } from "react";
+import { useEffect, useState } from "react";
+
+type Mode = "system" | "light" | "dark";
+
+const NEXT: Record<Mode, Mode> = {
+  system: "light",
+  light: "dark",
+  dark: "system",
+};
+
+const LABEL: Record<Mode, string> = {
+  system: "System",
+  light: "Light",
+  dark: "Dark",
+};
+
+const STORAGE_KEY = "theme";
+
+const readStoredMode = (): Mode | null => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored === "light" || stored === "dark" || stored === "system"
+      ? stored
+      : null;
+  } catch {
+    return null;
+  }
+};
 
 type Props = { className?: string };
 
 export const LightDarkToggle: FC<Props> = ({ className }) => {
-  const [mode, setMode] = useState<"light" | "dark" | "system">("system");
+  const [mode, setMode] = useState<Mode>("system");
 
-  const handleClick = () => {
-    if (mode === "system") {
-      setMode("light");
-      document.body.classList.remove("dark");
-    } else if (mode === "light") {
-      setMode("dark");
-      document.body.classList.add("dark");
-    } else {
-      setMode("light");
-      document.body.classList.remove("dark");
-    }
-  };
+  useEffect(() => {
+    const stored = readStoredMode();
+    if (stored) setMode(stored);
+  }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const dark = mode === "dark" || (mode === "system" && query.matches);
+      document.documentElement.classList.toggle("dark", dark);
+    };
+
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, [mode]);
+
+  const label = `Theme: ${LABEL[mode]} (click for ${LABEL[NEXT[mode]]})`;
 
   return (
     <button
-      onClick={handleClick}
+      type="button"
+      onClick={() => {
+        const next = NEXT[mode];
+        setMode(next);
+        try {
+          localStorage.setItem(STORAGE_KEY, next);
+        } catch {
+          // A blocked storage API just means the choice is not remembered.
+        }
+      }}
+      aria-label={label}
+      title={label}
       className={clsx(
         className,
-        "overflow-hidden h-10 w-10 p-4 rounded-full",
-        "self-center hover:bg-card-foreground/10 ",
-        "active:shadow-inner ",
-        "transition-colors",
-        "text-primary dark:text-foreground",
-        "hover:text-yellow-700 dark:hover:text-yellow-400"
+        "relative h-10 w-10 shrink-0 overflow-hidden rounded-full",
+        "bg-[var(--tile-bg)] text-ink-1",
+        "[box-shadow:var(--neu-shadow-up)] active:[box-shadow:var(--neu-shadow-in)]",
+        "transition-colors hover:text-amber"
       )}
     >
-      <div
-        className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "dark" ? "-translate-y-2" : "-translate-y-10"
-        )}
-      >
-        <MoonIcon className="text" />
-      </div>
-      <div
-        className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "system" ? "-translate-y-8" : "translate-y-8"
-        )}
-      >
-        <SunMoonIcon />
-      </div>
-      <div
-        className={clsx(
-          "transition-transform",
-          "ease-in-out",
-          "duration-500",
-          "-translate-x-2",
-          mode === "light" ? "-translate-y-14" : "translate-y-2"
-        )}
-      >
-        <SunIcon />
-      </div>
-      {/* <div>S</div> */}
+      <Icon mode={mode} active="dark" offset="-translate-y-[30px]">
+        <MoonIcon size={20} />
+      </Icon>
+      <Icon mode={mode} active="system" offset="translate-y-[30px]">
+        <SunMoonIcon size={20} />
+      </Icon>
+      <Icon mode={mode} active="light" offset="translate-y-[30px]">
+        <SunIcon size={20} />
+      </Icon>
     </button>
   );
 };
+
+const Icon: FC<{
+  mode: Mode;
+  active: Mode;
+  offset: string;
+  children: ReactNode;
+}> = ({ mode, active, offset, children }) => (
+  <span
+    className={clsx(
+      "absolute left-[10px] top-[10px] block h-5 w-5",
+      "transition-[transform,opacity] duration-500 ease-in-out",
+      mode === active ? "translate-y-0 opacity-100" : `${offset} opacity-0`
+    )}
+  >
+    {children}
+  </span>
+);

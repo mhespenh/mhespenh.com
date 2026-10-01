@@ -1,12 +1,108 @@
+/* Global stylesheet: Tailwind layers plus the Tactile Glass design tokens. */
+/* Tokens are defined on :root and redefined on :root.dark, so .dark must sit on <html>. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    --font-display: "Manrope", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    --color-indigo: #6d7dff;
+    --color-violet: #9b86ff;
+    --color-mint: #29c79a;
+    --color-rose: #e94a76;
+    --color-amber: #e9a23a;
+
+    --bg-mesh: linear-gradient(
+      135deg,
+      #dbeafe 0%,
+      #ede9fe 30%,
+      #d1fae5 65%,
+      #fce7f3 100%
+    );
+    --bg-solid: #f0f2fa;
+    --glass-bg: #ffffffc7;
+    --glass-blur: 18px;
+    --glass-border: #ffffffb3;
+    --ring-gradient: linear-gradient(
+      135deg,
+      #a5b4fc,
+      #f9a8d4,
+      #6ee7b7,
+      #93c5fd,
+      #c4b5fd
+    );
+    --ring-cycle: #a5b4fc, #f9a8d4, #6ee7b7, #93c5fd, #c4b5fd, #a5b4fc;
+    --ring-glow: -10px -8px 22px -8px #a5b4fc8c, 10px -8px 22px -8px #f9a8d48c,
+      12px 10px 24px -8px #6ee7b773, -12px 10px 24px -8px #93c5fd73;
+    --ring-width: 1.5px;
+    --ring-opacity: 0.7;
+    --neu-shadow-up: 6px 6px 16px #a3b1c680, -4px -4px 12px #fffc;
+    --neu-shadow-in: inset 3px 3px 8px #a3b1c666, inset -2px -2px 6px #ffffffb3;
+    --ink-1: #0c1335;
+    --ink-2: #2b3360;
+    --ink-3: #404d7a;
+    --ink-4: #6e7aa4;
+    --tile-bg: #ffffffb3;
+    --rail-bg: #ffffff8c;
+    --rail-active: #6d7dff1f;
+
+    /* The navigation rail draws its own surfaces rather than the rail tokens above. */
+    --rail-track-bg: #ffffffe6;
+    --rail-track-border: transparent;
+    --rail-track-shadow: inset 4px 4px 12px rgba(163, 177, 198, 0.55),
+      inset -3px -3px 8px rgba(255, 255, 255, 0.85);
+    --rail-pill-bg: #ffffff;
+    --rail-pill-shadow: 4px 4px 10px rgba(163, 177, 198, 0.4),
+      -3px -3px 8px rgba(255, 255, 255, 0.8);
+  }
+
+  :root.dark {
+    --bg-mesh: radial-gradient(
+        ellipse 80% 60% at 10% 20%,
+        #6d7dff38 0%,
+        transparent 60%
+      ),
+      radial-gradient(ellipse 60% 50% at 85% 70%, #9b86ff2b 0%, transparent 55%),
+      radial-gradient(
+        ellipse 50% 40% at 50% 100%,
+        #29c79a1f 0%,
+        transparent 50%
+      ),
+      #020617;
+    --bg-solid: #020617;
+    --glass-bg: #0f172a80;
+    --glass-blur: 36px;
+    --glass-border: #ffffff0f;
+    --ring-gradient: linear-gradient(135deg, #22d3ee, #818cf8, #22d3ee);
+    --ring-cycle: #22d3ee, #818cf8, #22d3ee;
+    --ring-glow: -10px -8px 24px -8px #22d3ee73, 10px -8px 24px -8px #818cf873,
+      12px 10px 26px -8px #22d3ee5c, -12px 10px 26px -8px #818cf85c;
+    --ring-width: 1.5px;
+    --ring-opacity: 0.85;
+    --neu-shadow-up: 6px 6px 20px #0009, -2px -2px 8px #ffffff08;
+    --neu-shadow-in: inset 3px 3px 10px #00000080, inset -1px -1px 4px #ffffff0a;
+    --ink-1: #e6edf8;
+    --ink-2: #c4cce0;
+    --ink-3: #8892b0;
+    --ink-4: #64748b;
+    --tile-bg: #0f172a99;
+    --rail-bg: #0f172ab3;
+    --rail-active: #22d3ee1a;
+
+    --rail-track-bg: #33415599;
+    --rail-track-border: #ffffff1a;
+    --rail-track-shadow: inset 4px 4px 16px rgba(0, 0, 0, 0.6),
+      inset -2px -2px 6px rgba(255, 255, 255, 0.08);
+    --rail-pill-bg: #64748b;
+    --rail-pill-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4),
+      -1px -1px 4px rgba(255, 255, 255, 0.06);
+  }
+
+  :root {
     --background: 0 0% 100%;
-    --background-gradient-start: #fbc2eb;
-    --background-gradient-end: #a6c1ee;
     --foreground: 224 71.4% 4.1%;
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
@@ -30,8 +126,6 @@
 
   .dark {
     --background: 224 71.4% 4.1%;
-    --background-gradient-start: #3d2637;
-    --background-gradient-end: #3a4a65;
     --foreground: 210 20% 98%;
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
@@ -58,12 +152,96 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
-    background-image: linear-gradient(
-      to top,
-      var(--background-gradient-start) 0%,
-      var(--background-gradient-end) 100%
-    );
+    background: var(--bg-mesh);
+    background-attachment: fixed;
+    color: var(--ink-2);
     min-height: 100vh;
+  }
+}
+
+@property --ring-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes ring-travel {
+  from {
+    --ring-angle: 0deg;
+  }
+  to {
+    --ring-angle: 360deg;
+  }
+}
+
+@layer components {
+  /* The 1.5px gradient ring that outlines every glass surface. */
+  .ring-border {
+    position: relative;
+  }
+  .ring-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--ring-width);
+    background: var(--ring-gradient);
+    opacity: var(--ring-opacity);
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
+    mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
+    -webkit-mask-clip: content-box, border-box;
+    mask-clip: content-box, border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Wraps a card that links somewhere: the ring travels and a matching halo
+     fades in while the pointer is over it. */
+  .card-link {
+    border-radius: 18px;
+    transition:
+      box-shadow 250ms ease-out,
+      transform 200ms ease-out;
+  }
+  .card-link:hover {
+    box-shadow: var(--ring-glow);
+  }
+
+  /* A second ring whose colours circle the card. Conic, so each colour travels
+     around the perimeter rather than sweeping across it. It sits above the
+     resting ring and fades in, so hover cross-fades between the two. */
+  .ring-border::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--ring-width);
+    background: conic-gradient(from var(--ring-angle), var(--ring-cycle));
+    filter: saturate(1.8) brightness(1.03);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease-out;
+    animation: ring-travel 5s linear infinite;
+    animation-play-state: paused;
+    -webkit-mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
+    mask-image: linear-gradient(#fff 0 0), linear-gradient(#fff 0 0);
+    -webkit-mask-clip: content-box, border-box;
+    mask-clip: content-box, border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .card-link:hover .ring-border::after {
+    opacity: 1;
+    animation-play-state: running;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ring-border::after {
+      animation: none;
+    }
+    .card-link {
+      transition: none;
+    }
   }
 }
